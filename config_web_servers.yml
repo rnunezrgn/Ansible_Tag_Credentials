@@ -1,0 +1,60 @@
+---
+- name: Configure Web Servers
+  hosts: web_servers
+  become: true
+  tasks:
+    - name: Install Nginx on Web Servers
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      tags:
+        - web
+        - install
+
+    - name: Start Nginx service on Web Servers
+      ansible.builtin.service:
+        name: nginx
+        state: started
+      tags:
+        - web
+        - start
+
+- name: Configure Database Servers
+  hosts: db_servers
+  become: true
+  tasks:
+    - name: Install MySQL on DB Servers
+      ansible.builtin.dnf:
+        name: mysql-server
+        state: present
+      tags:
+        - db
+        - install
+
+    - name: Start MySQL service on DB Servers
+      ansible.builtin.service:
+        name: mysql
+        state: started
+      tags:
+        - db
+        - start
+
+- name: Configure Mid-Tier Servers
+  hosts: midtier_servers
+  become: true
+  tasks:
+    - name: Install Java on Mid-Tier Servers
+      ansible.builtin.dnf:
+        name: openjdk-11-jdk
+        state: present
+      tags:
+        - midtier
+        - install
+
+    - name: Start Mid-Tier service
+      ansible.builtin.service:
+        name: midtier-service
+        state: started
+      tags:
+        - midtier
+        - start
